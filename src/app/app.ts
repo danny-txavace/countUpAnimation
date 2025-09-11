@@ -1,12 +1,31 @@
-import { Component, signal } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { AfterViewInit, Component, ElementRef, OnInit, signal, ViewChild } from '@angular/core';
+import { CountUp } from 'countup.js';
+import { CountUpModule } from 'ngx-countup';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
+  imports: [CountUpModule],
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })
-export class App {
+export class App implements AfterViewInit, OnInit {
   protected readonly title = signal('CountUpAnimation');
+
+  @ViewChild('countUpElement') countUpElement!: ElementRef;
+
+  ngAfterViewInit() {
+    const countUp = new CountUp(this.countUpElement.nativeElement, 20021.75, {
+      duration: 2,
+      separator: ' ',
+      decimal: ',',
+      decimalPlaces: 2
+    });
+    if (!countUp.error) {
+      countUp.start();
+    }
+  }
+
+  ngOnInit(): void {
+    //this.onCountUp();
+  }
 }
